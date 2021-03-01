@@ -8,7 +8,6 @@ const IssueCard = lazy(() => import('../issuecard/IssuesCard'))
 
 function IssuesList({ issues, repo }) {
   const dispatch = useDispatch()
-  //   const { error, fetching } = useSelector((state) => state.github)
   const [open, setOpen] = useState(false)
   const [value, setValue] = useState({
     title: '',
@@ -25,17 +24,15 @@ function IssuesList({ issues, repo }) {
 
     try {
       setValue({ ...value, loading: true })
+      let desc = value.description.replace(/(<([^>]+)>)/gi, '')
 
       const issue = {
-        owner: repo && repo.owner.login,
-        repo: repo && repo.name,
+        repositoryId: repo.id,
         title: value.title,
-        body: value.description,
+        body: desc,
       }
 
-      const url = `https://api.github.com/repos/${repo.owner.login}/${repo.name}/issues`
-
-      dispatch(createIssue(url, issue))
+      dispatch(createIssue(issue))
       setValue({ ...value, loading: false })
       toggle()
     } catch (error) {
@@ -55,7 +52,7 @@ function IssuesList({ issues, repo }) {
           <option value='closed'>Closed</option>
         </Select>
 
-        {!repo.private && (
+        {!repo.isPrivate && (
           <button className='btn btn__newissue' onClick={toggle}>
             New Issue
           </button>
@@ -74,7 +71,7 @@ function IssuesList({ issues, repo }) {
       <div className='issues__wrapper'>
         {issues &&
           issues.map((issue) => (
-            <Suspense key={issue.id} fallback={<h3>Loading ...</h3>}>
+            <Suspense key={issue.node.id} fallback={<h3>Loading ...</h3>}>
               <IssueCard issue={issue} />
             </Suspense>
           ))}

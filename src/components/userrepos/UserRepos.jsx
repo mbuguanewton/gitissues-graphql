@@ -10,7 +10,7 @@ function UserRepos({ repos }) {
       <div className='userrepos__wrapper'>
         {repos &&
           repos.map((repo) => (
-            <Suspense key={repo.id} fallback={<h3>Loading ...</h3>}>
+            <Suspense key={repo.node.id} fallback={<h3>Loading ...</h3>}>
               <RepoCard repo={repo} />
             </Suspense>
           ))}

@@ -2,30 +2,31 @@ import { Badge } from '@chakra-ui/react'
 import React, { useState, useEffect, useCallback } from 'react'
 
 function Languages({ languages }) {
-  const [langArray, setLangArray] = useState([])
+  //   console.log(languages)
+  //   const [langArray, setLangArray] = useState([])
 
-  const changeToArray = useCallback(() => {
-    const newLangs = Object.keys(languages)
-    setLangArray(newLangs)
-  }, [languages])
+  //   const changeToArray = useCallback(() => {
+  //     const newLangs = Object.keys(languages)
+  //     setLangArray(newLangs)
+  //   }, [languages])
 
-  useEffect(() => {
-    changeToArray()
-  }, [languages, changeToArray])
+  //   useEffect(() => {
+  //     changeToArray()
+  //   }, [languages, changeToArray])
 
   return (
     <div className='languages'>
       <div className='languages__wrapper'>
-        {langArray && langArray.length
-          ? langArray.map((lang) => (
+        {languages && languages.length
+          ? languages.map((lang) => (
               <Badge
-                key={lang}
+                key={lang.node.id}
                 alignItems='center'
                 justifyContent='center'
                 display='flex'
                 padding='5px'
                 className='languages__wrapper--badge'>
-                {lang}
+                {lang.node.name}
               </Badge>
             ))
           : null}

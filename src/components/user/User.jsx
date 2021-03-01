@@ -10,7 +10,7 @@ function UserDetails() {
 
   useEffect(() => {
     if (user) {
-      dispatch(fetchRepos(user.repos_url))
+      dispatch(fetchRepos(user.login))
     }
   }, [user, dispatch])
   return (
@@ -18,7 +18,7 @@ function UserDetails() {
       <div className='user__wrapper'>
         <div className='user__wrapper--avatar'>
           <Avatar
-            src={user && user.avatar_url}
+            src={user && user.avatarUrl}
             name={user && user.login}
             className='user--avatar'
           />
@@ -27,17 +27,21 @@ function UserDetails() {
           {/* <h5>Details</h5> */}
           <h3>{user && user.login}</h3>
           <Stack direction='row' alignItems='center'>
-            <Badge className='badge'>Repos : {user && user.public_repos}</Badge>
-            <Badge className='badge'>Gists : {user && user.public_gists}</Badge>
             <Badge className='badge'>
-              Followers : {user && user.followers}
+              Repos : {user && user.repositories.totalCount}
+            </Badge>
+            <Badge className='badge'>
+              Gists : {user && user.gists.totalCount}
+            </Badge>
+            <Badge className='badge'>
+              Followers : {user && user.followers.totalCount}
             </Badge>
           </Stack>
           <div className='actions'>
-            <a href={user && user.blog} className='btn btn__blog'>
+            <a href={user && user.websiteUrl} className='btn btn__blog'>
               <FaGlobe className='icon' />
             </a>
-            <a href={user && user.html_url} className='btn btn__link'>
+            <a href={user && user.url} className='btn btn__link'>
               <FaGithub className='icon' />
               <span>visit github</span>
             </a>

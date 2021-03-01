@@ -11,12 +11,12 @@ function Repo() {
   const { issues } = useSelector((state) => state.github)
   const { state } = useLocation()
 
-  const url = `https://api.github.com/repos/${state.owner.login}/${state.name}/issues`
+  //   const url = `https://api.github.com/repos/${state.owner.login}/${state.name}/issues`
   useEffect(() => {
     if (state) {
-      dispatch(fetchIssues(url))
+      dispatch(fetchIssues(state.owner.login, state.name))
     }
-  }, [state, dispatch, url])
+  }, [state, dispatch])
 
   return (
     <div className='repo'>

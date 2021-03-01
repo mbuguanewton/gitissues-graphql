@@ -4,20 +4,20 @@ import AvatarComponent from '../common/avatar/Avatar'
 
 function IssuesCard({ issue }) {
   const user = {
-    url: issue ? issue.user.avatar_url : '',
-    label: issue ? issue.user.login : '',
+    url: issue ? issue.node.author.avatarUrl : '',
+    label: issue ? issue.node.author.login : '',
   }
   return (
     <div className='issuecard'>
-      <Text as='h3'>{issue && issue.title}</Text>
+      <Text as='h3'>{issue && issue.node.title}</Text>
 
       <div className='issuecard__container'>
         <AvatarComponent user={user} />
 
-        {issue && issue.state === 'open' ? (
-          <Badge className='badge badge__open'>{issue.state}</Badge>
+        {issue && issue.node.state === 'OPEN' ? (
+          <Badge className='badge badge__open'>{issue.node.state}</Badge>
         ) : (
-          <Badge className='badge badge__close'>{issue.state}</Badge>
+          <Badge className='badge badge__close'>{issue.node.state}</Badge>
         )}
       </div>
     </div>
