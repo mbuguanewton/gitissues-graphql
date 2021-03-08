@@ -4,7 +4,7 @@ import { Stack, Image } from '@chakra-ui/react'
 
 function Nav() {
   return (
-    <nav className='nav'>
+    <nav className='nav' data-testid='nav'>
       <div className='nav__wrapper'>
         <Link to='/' className='nav__wrapper--logo'>
           <Stack direction='row' alignItems='center'>

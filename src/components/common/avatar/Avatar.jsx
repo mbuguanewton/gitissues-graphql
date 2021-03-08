@@ -9,7 +9,7 @@ import React from 'react'
 
 function AvatarComponent({ user }) {
   return (
-    <div className='avatar'>
+    <div className='avatar' data-testid='avatar'>
       {user ? (
         <Stack direction='row' alignItems='center' className='avatar__stack'>
           <Avatar

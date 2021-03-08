@@ -1,5 +1,5 @@
 import { Select, Stack, Text } from '@chakra-ui/react'
-import React, { Suspense, lazy, useState } from 'react'
+import React, { Suspense, lazy, useState, useEffect } from 'react'
 import IssueForm from '../../forms/IssueForm'
 import { useDispatch } from 'react-redux'
 import { createIssue } from '../../store/actions/GithubActions'
@@ -9,11 +9,16 @@ const IssueCard = lazy(() => import('../issuecard/IssuesCard'))
 function IssuesList({ issues, repo }) {
   const dispatch = useDispatch()
   const [open, setOpen] = useState(false)
+  const [items, setItems] = useState([])
   const [value, setValue] = useState({
     title: '',
     description: '',
     loading: false,
   })
+
+  const [select, setSelect] = useState('')
+
+  console.log(select)
 
   const toggle = () => {
     setOpen((prevState) => !prevState)
@@ -40,6 +45,28 @@ function IssuesList({ issues, repo }) {
     }
   }
 
+  useEffect(() => {
+    if (issues) {
+      setItems(issues)
+    }
+  }, [issues])
+
+  useEffect(() => {
+    if (select === 'open') {
+      const openIssues =
+        issues && issues.filter((issue) => issue.node.state === 'OPEN')
+
+      setItems(openIssues)
+    } else if (select === 'closed') {
+      const closedIssues =
+        issues && issues.filter((issue) => issue.node.state === 'CLOSED')
+
+      setItems(closedIssues)
+    } else {
+      setItems(issues)
+    }
+  }, [select, issues])
+
   return (
     <div className='issues'>
       <Stack
@@ -47,7 +74,12 @@ function IssuesList({ issues, repo }) {
         alignItems='center'
         justifyContent='space-between'
         className='issues__header'>
-        <Select width={['30%']} mb='10px' placeholder='Sort By'>
+        <Select
+          width={['30%']}
+          mb='10px'
+          value={select}
+          placeholder='Sort By'
+          onChange={(e) => setSelect(e.target.value)}>
           <option value='open'>Open</option>
           <option value='closed'>Closed</option>
         </Select>
@@ -69,14 +101,14 @@ function IssuesList({ issues, repo }) {
 
       <Text as='h3'>Repo Issues</Text>
       <div className='issues__wrapper'>
-        {issues &&
-          issues.map((issue) => (
+        {items &&
+          items.map((issue) => (
             <Suspense key={issue.node.id} fallback={<h3>Loading ...</h3>}>
               <IssueCard issue={issue} />
             </Suspense>
           ))}
 
-        {!issues.length && <Text as='h3'>No Issues found</Text>}
+        {!items.length && <Text as='h3'>No Issues found</Text>}
       </div>
     </div>
   )
